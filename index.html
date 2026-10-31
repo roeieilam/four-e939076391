@@ -1,0 +1,587 @@
+<!doctype html><html><head><meta charset=utf8><meta name="robots" content="noindex,nofollow"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>ארבעת האוטיסטים</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;800&display=swap">
+<style>
+/* Layout: the group itself. One chat column with a sticky group header and tabs (chat, media, voice notes, starred, group info, quiz). */
+:root{
+  --wall:#ece5dd; --wall-dot:#e0d7cc; --bar:#0f6e5e; --bar-ink:#ffffff; --bar-sub:#cfe9e3;
+  --bubble:#ffffff; --mine:#dcf5c8; --ink:#111b21; --muted:#667781; --line:#e3ddd5;
+  --accent:#0f8f72; --pill:#ffffffd9; --notice:#fff3c4; --notice-ink:#54470f; --star:#e6a700;
+  --c-roei:#1f6fd1; --c-tomer:#d0641b; --c-ben:#1b8a4e; --c-ron:#7c45c4; --c-liel:#c22f68; --c-x:#6b6b6b;
+  --body:"Rubik","Arial Hebrew","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --wall:#0b141a; --wall-dot:#111d24; --bar:#1f2c34; --bar-ink:#e9edef; --bar-sub:#8696a0;
+  --bubble:#202c33; --mine:#005c4b; --ink:#e9edef; --muted:#8696a0; --line:#2a3942;
+  --accent:#21c19a; --pill:#182229e6; --notice:#3b3417; --notice-ink:#f2e3a6; --star:#f5c542;
+  --c-roei:#78a9ff; --c-tomer:#ff9d5c; --c-ben:#5fd394; --c-ron:#b98cff; --c-liel:#ff7fae; --c-x:#a8a8a8;
+  color-scheme:dark }}
+:root[data-theme="dark"]{
+  --wall:#0b141a; --wall-dot:#111d24; --bar:#1f2c34; --bar-ink:#e9edef; --bar-sub:#8696a0;
+  --bubble:#202c33; --mine:#005c4b; --ink:#e9edef; --muted:#8696a0; --line:#2a3942;
+  --accent:#21c19a; --pill:#182229e6; --notice:#3b3417; --notice-ink:#f2e3a6; --star:#f5c542;
+  --c-roei:#78a9ff; --c-tomer:#ff9d5c; --c-ben:#5fd394; --c-ron:#b98cff; --c-liel:#ff7fae; --c-x:#a8a8a8;
+  color-scheme:dark }
+html{direction:rtl}
+body{background:var(--wall);background-image:radial-gradient(var(--wall-dot) 1.2px,transparent 1.3px);background-size:22px 22px;color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.45}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bar)}
+.col{max-width:780px;margin:0 auto;padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px))}
+button{font:inherit;cursor:pointer;color:inherit}
+button:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+p{margin:0}
+h1,h2,h3{margin:0;text-wrap:balance}
+.num{font-variant-numeric:tabular-nums}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bar);color:var(--bar-ink);box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.top .col{padding-block:10px 0}
+.gh{display:flex;align-items:center;gap:12px}
+.ava{width:44px;height:44px;border-radius:50%;flex:none;display:grid;place-items:center;font-weight:800;color:#fff}
+.gava{background:conic-gradient(var(--c-roei) 0 25%,var(--c-tomer) 0 50%,var(--c-ben) 0 75%,var(--c-ron) 0);font-size:20px;text-shadow:0 1px 2px rgba(0,0,0,.35)}
+.gh h1{font-size:19px;font-weight:700;line-height:1.2}
+.gh p{font-size:13px;color:var(--bar-sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gh>div{min-width:0}
+.tabs{display:flex;gap:2px;margin-top:8px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{flex:1 0 auto;background:none;border:0;color:var(--bar-sub);font-weight:500;font-size:15px;padding:8px 10px 9px;border-bottom:3px solid transparent;white-space:nowrap}
+.tabs button[aria-selected="true"]{color:var(--bar-ink);border-bottom-color:var(--accent)}
+.pin{display:flex;gap:8px;align-items:center;background:var(--bubble);color:var(--ink);font-size:14px;padding:7px 12px;border-bottom:1px solid var(--line)}
+.pin b{color:var(--c-tomer);font-weight:700}
+.pin span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+
+/* chat */
+main{padding-block:14px 60px}
+.chat{display:flex;flex-direction:column;gap:3px}
+.day{align-self:center;background:var(--pill);color:var(--muted);font-size:13px;padding:4px 12px;border-radius:8px;margin:14px 0 6px;box-shadow:0 1px 1px rgba(0,0,0,.06);text-align:center}
+.day small{display:block;font-size:11px}
+.sys{align-self:center;background:var(--pill);color:var(--muted);font-size:13px;padding:4px 12px;border-radius:8px;margin:4px 0;text-align:center;max-width:90%}
+.notice{align-self:center;background:var(--notice);color:var(--notice-ink);font-size:14px;padding:8px 14px;border-radius:8px;margin:6px 0;max-width:520px;text-align:center;line-height:1.5}
+.msg{position:relative;background:var(--bubble);border-radius:8px;padding:5px 9px 6px;max-width:min(78%,520px);align-self:flex-start;box-shadow:0 1px .5px rgba(0,0,0,.13);min-width:0;overflow-wrap:anywhere}
+.msg.me{background:var(--mine);align-self:flex-end}
+.msg.first{margin-top:6px}
+.msg.first:not(.me){border-start-start-radius:0}
+.msg.first.me{border-start-end-radius:0}
+.msg .who{font-size:13px;font-weight:700;margin-bottom:1px}
+.msg.me .who{display:none}
+.msg:not(.first) .who{display:none}
+.msg .txt{white-space:pre-line}
+.msg .t{float:left;font-size:11px;color:var(--muted);margin:6px 8px 0 0;line-height:1}
+.msg .fwd{font-size:12px;color:var(--muted);font-style:italic;margin-bottom:2px}
+.msg .media{color:var(--muted);font-style:italic}
+.msg img,.msg video{display:block;border-radius:6px;max-width:100%;margin:2px 0 3px}
+.msg img{cursor:zoom-in;max-height:420px;object-fit:cover}
+.msg.photo{padding:3px 3px 5px}
+.msg.photo .cap{padding:2px 6px 0}
+.grid4{display:grid;grid-template-columns:1fr 1fr;gap:3px;width:min(300px,62vw)}
+.grid4 img{aspect-ratio:1;object-fit:cover;margin:0;width:100%}
+
+/* voice */
+.voice{display:flex;align-items:center;gap:10px;min-width:min(290px,64vw)}
+.voice .play{width:34px;height:34px;border-radius:50%;border:0;background:var(--accent);color:#fff;flex:none;display:grid;place-items:center;font-size:14px}
+.bars{display:flex;align-items:center;gap:2px;height:30px;flex:1;min-width:0;direction:ltr;cursor:pointer}
+.bars i{flex:1;background:var(--muted);opacity:.45;border-radius:2px;min-width:2px}
+.bars i.on{background:var(--accent);opacity:1}
+.voice .dur{font-size:12px;color:var(--muted);flex:none;min-width:30px}
+.vq{font-size:14px;margin-top:4px;color:var(--ink)}
+.vq::before{content:"«"}.vq::after{content:"»"}
+
+/* poll */
+.poll{min-width:min(280px,62vw);display:grid;gap:8px}
+.poll .ttl{font-weight:700}
+.poll button{display:grid;grid-template-columns:20px 1fr auto;gap:8px;align-items:center;background:none;border:0;padding:0;text-align:right}
+.poll button .rad{width:16px;height:16px;border-radius:50%;border:2px solid var(--muted)}
+.poll button[aria-pressed="true"] .rad{background:var(--accent);border-color:var(--accent)}
+.poll .bar{grid-column:2/4;height:6px;border-radius:3px;background:var(--line);overflow:hidden}
+.poll .bar i{display:block;height:100%;background:var(--accent);transition:width .3s}
+.poll .votes{font-size:12px;color:var(--muted)}
+
+/* views */
+.view[hidden]{display:none}
+.vh{background:var(--pill);border-radius:10px;padding:12px 14px;margin-bottom:12px}
+.vh h2{font-size:20px}
+.vh p{color:var(--muted);font-size:14px;margin-top:2px}
+
+/* film */
+.film{display:block;width:100%;max-width:420px;margin:0 auto;aspect-ratio:9/16;background:#000;border-radius:12px}
+
+/* media */
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:4px}
+.mgrid button{border:0;padding:0;background:var(--bubble);aspect-ratio:1;overflow:hidden;position:relative;border-radius:4px}
+.mgrid img{width:100%;height:100%;object-fit:cover;display:block}
+.mgrid .vt{position:absolute;inset:auto 6px 6px auto;background:rgba(0,0,0,.6);color:#fff;font-size:12px;padding:1px 6px;border-radius:4px}
+
+/* starred */
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.chips button{border:1px solid var(--line);background:var(--bubble);border-radius:999px;padding:4px 14px;font-weight:500}
+.chips button[aria-pressed="true"]{background:var(--accent);color:#fff;border-color:var(--accent)}
+.star{margin-bottom:16px}
+.star .sh{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap;background:var(--pill);border-radius:8px;padding:6px 12px;margin-bottom:4px}
+.star .sh b{font-weight:700}
+.star .sh b::before{content:"★ ";color:var(--star)}
+.star .sh span{font-size:13px;color:var(--muted)}
+
+/* info */
+.info{background:var(--bubble);border-radius:10px;overflow:hidden;margin-bottom:12px}
+.ihead{text-align:center;padding:22px 16px 18px}
+.ihead .ava{width:96px;height:96px;font-size:40px;margin:0 auto 10px}
+.ihead h2{font-size:24px}
+.ihead p{color:var(--muted)}
+.ibox{padding:14px 16px;border-top:8px solid var(--wall)}
+.ibox h3{font-size:14px;color:var(--accent);font-weight:500;margin-bottom:8px}
+.desc{font-size:16px}
+.desc small{display:block;color:var(--muted);font-size:13px}
+.stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.stats div{display:flex;flex-direction:column}
+.stats b{font-size:28px;font-weight:800;line-height:1.1}
+.stats span{font-size:13px;color:var(--muted)}
+.mem{border-top:1px solid var(--line)}
+.mem:first-of-type{border-top:0}
+.mem>button{display:flex;gap:12px;align-items:center;width:100%;background:none;border:0;padding:10px 0;text-align:right}
+.mem>button>div{min-width:0;flex:1}
+.mem .nm{font-weight:700;display:flex;justify-content:space-between;gap:8px}
+.mem .nm small{font-weight:400;color:var(--accent);font-size:12px}
+.mem .ab{color:var(--muted);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mem .more{padding:0 56px 12px 0;display:grid;gap:10px}
+.mem dl{margin:0;display:grid;grid-template-columns:1fr auto;gap:2px 12px;font-size:14px}
+.mem dt{color:var(--muted)}
+.mem dd{margin:0;font-weight:700}
+.mem blockquote{margin:0;padding:6px 10px;border-inline-start:3px solid var(--c);background:var(--wall);border-radius:4px;white-space:pre-line;font-size:15px}
+.mem blockquote small{display:block;color:var(--muted);font-size:12px;white-space:normal}
+.dict{display:grid;gap:10px}
+.term b{font-weight:700}
+.term span{color:var(--ink)}
+.term small{display:block;color:var(--muted);font-size:12px}
+
+/* people */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.pc{background:var(--bubble);border-radius:12px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.12);border-top:6px solid var(--c)}
+.pc .ph{display:flex;gap:14px;align-items:center;padding:16px}
+.pc .ph .ava{width:64px;height:64px;font-size:28px;background:var(--c)}
+.pc .ph img{width:64px;height:64px;border-radius:50%;object-fit:cover;flex:none;border:3px solid var(--c);cursor:zoom-in}
+.pc h3{font-size:20px}
+.pc .tg{display:inline-block;margin-top:2px;font-size:13px;font-weight:700;color:#fff;background:var(--c);border-radius:999px;padding:1px 10px}
+.pc .ab2{color:var(--muted);font-size:14px;margin-top:4px}
+.pc .sec{padding:12px 16px;border-top:1px solid var(--line);display:grid;gap:8px}
+.pc .sec h4{margin:0;font-size:13px;color:var(--accent);font-weight:500}
+.pc dl{margin:0;display:grid;grid-template-columns:1fr auto;gap:4px 12px;font-size:14px}
+.pc dt{color:var(--muted)}
+.pc dd{margin:0;font-weight:700}
+.pc blockquote{margin:0;white-space:pre-line;font-size:17px;font-weight:500;line-height:1.4}
+.pc blockquote small{display:block;color:var(--muted);font-size:12px;font-weight:400;margin-top:4px}
+.pc .none{color:var(--muted);font-size:14px}
+
+/* quiz */
+.qcard{display:grid;gap:12px}
+.qq{white-space:pre-line;font-size:clamp(18px,3vw,22px)}
+.qopts{display:grid;gap:8px}
+.qopts button{display:flex;gap:10px;align-items:center;border:1px solid var(--line);background:var(--wall);border-radius:8px;padding:8px 12px;font-weight:500;text-align:right}
+.qopts button .ava{width:30px;height:30px;font-size:14px}
+.qopts button.ok{border-color:var(--c-ben);background:color-mix(in srgb,var(--c-ben) 22%,var(--bubble))}
+.qopts button.no{border-color:#d33;background:color-mix(in srgb,#d33 20%,var(--bubble))}
+.qfb{font-size:14px;color:var(--muted);min-height:1.4em}
+.qnext{justify-self:start;background:var(--accent);color:#fff;border:0;border-radius:999px;padding:8px 20px;font-weight:700}
+
+/* lightbox */
+.lb{position:fixed;inset:0;background:rgba(0,0,0,.9);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;z-index:20;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.lb[hidden]{display:none}
+.lb img,.lb video{max-height:82%;max-width:100%;border-radius:6px}
+.lb p{color:#eee;font-size:15px;text-align:center;max-width:60ch}
+@media (prefers-reduced-motion:no-preference){.poll .bar i{transition:width .3s}}
+</style>
+
+<header class="top">
+  <div class="col">
+    <div class="gh">
+      <div class="ava gava" aria-hidden="true">4</div>
+      <div><h1>ארבעת האוטיסטים</h1><p id="typing">רועי, תומר, בן, רון</p></div>
+    </div>
+    <nav class="tabs" role="tablist" id="tabs">
+      <button role="tab" data-v="chat" aria-selected="true">צ׳אט</button>
+      <button role="tab" data-v="film" aria-selected="false">🎬 הסרט</button>
+      <button role="tab" data-v="media" aria-selected="false">מדיה</button>
+      <button role="tab" data-v="voices" aria-selected="false">קוליות</button>
+      <button role="tab" data-v="starred" aria-selected="false">מסומנות ★</button>
+      <button role="tab" data-v="people" aria-selected="false">החבר׳ה</button>
+      <button role="tab" data-v="quiz" aria-selected="false">מי אמר?</button>
+      <button role="tab" data-v="info" aria-selected="false">פרטי הקבוצה</button>
+    </nav>
+  </div>
+  <div class="pin"><span aria-hidden="true">📌</span><span><b>תומר:</b> כל דבר שכולל בו את שלושתנו ביחד הוא מצחיק</span></div>
+</header>
+
+<main class="col">
+  <section class="view" id="v-chat"><div class="chat" id="chatbox"></div></section>
+
+  <section class="view" id="v-film" hidden>
+    <div class="vh"><h2>ארבעת האוטיסטים: הסרט</h2><p>חמש דקות: דפנה והחור, הניקיון ברפרוף, הפיצה, הריצה בגשם, המטאטא, בן וסוניה, הקרב וההחלקה. עם סאונד.</p></div>
+    <video class="film" controls playsinline preload="metadata" poster="m/film.jpg" src="m/film.mp4"></video>
+  </section>
+
+  <section class="view" id="v-media" hidden>
+    <div class="vh"><h2>מדיה</h2><p>745 תמונות וסרטונים של תומר, 225 של בן, 267 של רועי, 15 של רון. כאן הטובים. לחצו להגדלה.</p></div>
+    <div class="mgrid" id="mgrid"></div>
+  </section>
+
+  <section class="view" id="v-voices" hidden>
+    <div class="vh"><h2>קוליות</h2><p>תומר שלח 894. רון שלח 0.</p></div>
+    <div class="chat" id="vlist"></div>
+  </section>
+
+  <section class="view" id="v-starred" hidden>
+    <div class="vh"><h2>הודעות מסומנות</h2><p>רק שיחות שבהן מישהו באמת צחק.</p></div>
+    <div class="chips" id="chips"></div>
+    <div id="slist"></div>
+  </section>
+
+  <section class="view" id="v-people" hidden>
+    <div class="vh"><h2>החבר׳ה</h2><p>כרטיס לכל אחד. המספרים מהצ׳אט, הציטוטים מילה במילה.</p></div>
+    <div class="cards" id="cards"></div>
+  </section>
+
+  <section class="view" id="v-quiz" hidden>
+    <div class="vh"><h2>מי אמר את זה?</h2><p>כל הציטוטים אמיתיים, מילה במילה.</p></div>
+    <div class="msg first qcard" style="max-width:100%;align-self:stretch">
+      <p class="qfb" id="qscore"></p>
+      <p class="qq" id="qq"></p>
+      <div class="qopts" id="qopts"></div>
+      <p class="qfb" id="qfb" aria-live="polite"></p>
+      <button class="qnext" id="qnext" type="button" hidden>הבא</button>
+    </div>
+  </section>
+
+  <section class="view" id="v-info" hidden>
+    <div class="info">
+      <div class="ihead"><div class="ava gava" aria-hidden="true">4</div><h2>ארבעת האוטיסטים</h2><p>קבוצה · 4 משתתפים · נפתחה ע״י בן, 10.12.2023</p></div>
+      <div class="ibox"><h3>תיאור</h3><p class="desc">"אחי השם של הקבוצה הוא לא סתם"<small>בן, 31.12.2023, אחרי "בן אלרגי לפירות, אני חלבי, ורועי פוזל"</small></p></div>
+      <div class="ibox"><h3>במספרים, בשתי הקבוצות</h3><div class="stats" id="stats"></div></div>
+      <div class="ibox"><h3>4 משתתפים</h3><div id="members"></div></div>
+      <div class="ibox"><h3>קבוצה משותפת: מעבדה😎</h3><p class="desc" style="margin-bottom:6px">נפתחה 28.11.2024 בישיבה באוסקר ווילד. אותם ארבעה, ועוד ליאל.</p><div id="members2"></div></div>
+      <div class="ibox"><h3>מילון הקבוצה</h3><div class="dict" id="dict"></div></div>
+    </div>
+  </section>
+</main>
+
+<div class="lb" id="lb" hidden><img id="lbimg" alt=""><p id="lbcap"></p></div>
+
+<script>
+const COL={"רועי":"var(--c-roei)","תומר":"var(--c-tomer)","בן":"var(--c-ben)","רון":"var(--c-ron)","ליאל":"var(--c-liel)"};
+const $=id=>document.getElementById(id);
+const el=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e};
+// one shared audio player for every voice bubble
+const A=new Audio();let curV=null;
+A.ontimeupdate=()=>{if(!curV)return;const n=curV.bars.length,k=Math.round(n*A.currentTime/(A.duration||1));curV.bars.forEach((b,i)=>b.classList.toggle("on",i<k));curV.dur.textContent=fmt(A.currentTime)};
+A.onended=()=>{if(curV){curV.btn.textContent="▶";curV.bars.forEach(b=>b.classList.remove("on"));curV.dur.textContent=curV.total;curV=null}};
+const fmt=s=>Math.floor(s/60)+":"+String(Math.floor(s%60)).padStart(2,"0");
+function voice(f,dur){
+  const w=el("div","voice"),btn=el("button","play","▶");btn.type="button";btn.setAttribute("aria-label","נגן");
+  const bars=el("div","bars");let h=0;for(const c of f)h=(h*31+c.charCodeAt(0))>>>0;
+  const list=[];for(let i=0;i<34;i++){h=(h*1103515245+12345)>>>0;const b=el("i");b.style.height=(18+(h%82))+"%";bars.append(b);list.push(b)}
+  const d=el("span","dur",fmt(dur));const me={btn,bars:list,dur:d,total:fmt(dur)};
+  btn.onclick=()=>{if(curV===me){if(A.paused){A.play();btn.textContent="❚❚"}else{A.pause();btn.textContent="▶"}return}
+    if(curV){curV.btn.textContent="▶";curV.bars.forEach(b=>b.classList.remove("on"));curV.dur.textContent=curV.total}
+    curV=me;A.src="m/"+f+".mp3";A.play().catch(()=>{});btn.textContent="❚❚"};
+  bars.onclick=e=>{if(curV!==me)return;const r=bars.getBoundingClientRect();A.currentTime=(e.clientX-r.left)/r.width*(A.duration||dur)};
+  w.append(btn,bars,d);return w;
+}
+// item: ["~",date,sub] day | ["!",text] system | ["?",text] notice | [t,who,text] | {who,t,img|imgs|vid|voice|poll,...}
+function render(box,items){
+  let prev=null;
+  for(const it of items){
+    if(Array.isArray(it)&&it[0]==="~"){const d=el("div","day",it[1]);if(it[2])d.append(el("small",null,it[2]));box.append(d);prev=null;continue}
+    if(Array.isArray(it)&&it[0]==="!"){box.append(el("div","sys",it[1]));prev=null;continue}
+    if(Array.isArray(it)&&it[0]==="?"){box.append(el("div","notice",it[1]));prev=null;continue}
+    const o=Array.isArray(it)?{t:it[0],who:it[1],text:it[2]}:it;
+    const m=el("div","msg"+(o.who!==prev?" first":"")+(o.who==="רועי"?" me":""));
+    m.append(el("div","who",o.who));m.querySelector(".who").style.color=COL[o.who]||"var(--c-x)";
+    if(o.fwd)m.append(el("div","fwd","↪ הועבר"));
+    if(o.text!=null){m.append(el("div","txt"+(o.text.startsWith("[")?" media":""),o.text))}
+    if(o.img){m.classList.add("photo");const im=new Image();im.src="m/"+o.img+".jpg";im.alt=o.cap||"";im.loading="lazy";im.dataset.cap=o.cap||"";m.append(im);if(o.cap)m.append(el("div","txt cap",o.cap))}
+    if(o.imgs){m.classList.add("photo");const g=el("div","grid4");for(const s of o.imgs){const im=new Image();im.src="m/"+s+".jpg";im.alt=o.alt||"";im.dataset.cap=o.alt||"";im.loading="lazy";g.append(im)}m.append(g);if(o.cap)m.append(el("div","txt cap",o.cap))}
+    if(o.vid){m.classList.add("photo");const v=el("video");v.src="m/"+o.vid+".mp4";v.controls=true;v.playsInline=true;v.preload="metadata";m.append(v);if(o.cap)m.append(el("div","txt cap",o.cap))}
+    if(o.voice){m.append(voice(o.voice,o.dur));if(o.q)m.append(el("div","vq",o.q))}
+    if(o.poll)m.append(poll(o.poll));
+    const t=el("span","t",o.t||"");m.append(t);
+    box.append(m);prev=o.who;
+  }
+}
+function poll(p){
+  const w=el("div","poll");w.append(el("div","ttl",p.q));
+  const votes=p.opts.map(x=>x[1]);let mine=-1;const rows=[];
+  const draw=()=>{const tot=votes.reduce((a,b)=>a+b,0)+(mine>=0?1:0);rows.forEach((r,i)=>{const n=votes[i]+(mine===i?1:0);r.b.setAttribute("aria-pressed",mine===i);r.bar.style.width=(tot?100*n/tot:0)+"%";r.n.textContent=n})};
+  p.opts.forEach(([label],i)=>{const b=el("button");b.type="button";b.append(el("span","rad"),el("span",null,label));const n=el("span","votes num");b.append(n);const bar=el("span","bar");const bi=el("i");bar.append(bi);b.append(bar);b.onclick=()=>{mine=mine===i?-1:i;draw();if(p.out)p.out(mine)};w.append(b);rows.push({b,bar:bi,n})});
+  if(p.note)w.append(el("div","votes",p.note));
+  draw();return w;
+}
+
+const CHAT=[
+ ["~","10.12.2023"],
+ ["!","בן יצר את הקבוצה ״שלושת האוטיסטים״"],
+ ["22:07","בן","תגיד תומר אתה מכיר את עמית רומם"],
+ {t:"22:21",who:"תומר",voice:"smelly",dur:16,q:"תשמע, רועי, אני אוהב אותך, אחי, אבל אם אתה חושב שאני הולך לבזבז את הזמן שלי ולצפות בסרטון המסריח הזה"},
+ ["~","31.12.2023"],
+ ["17:45","תומר","אחי בן אלרגי לפירות"],["17:45","תומר","ואני חלבי"],["17:45","תומר","גדול בן"],
+ ["17:45","בן","ורועי פוזל"],["17:45","תומר","בדיוק"],["17:45","תומר","רציתי לרשום"],
+ ["17:45","רועי","סבבה רצח"],["17:45","בן","אחי השם של הקבוצה הוא לא סתם"],
+ ["~","31.1.2024"],
+ ["08:14","בן","יהיה מצחיק ללכת לאחת שלושתנו"],["08:14","תומר","אחי"],["08:14","תומר","כל דבר שכולל בו את שלושתנו ביחד הוא מצחיק"],["08:15","בן","בתכלס"],["08:15","רועי","חחחחחחחחח נכון"],
+ ["!","תומר הצמיד הודעה"],
+ ["~","27.3.2024","החור בקיר, פרק א׳: תורנות הבור"],
+ ["16:09","רועי","יש לי משהו זהב"],["16:09","רועי","לשלוח לכם"],["16:10","רועי","אני צחקתי בקול"],["16:10","רועי","אבל תשמעו לבד או באוזניות"],["16:10","רועי","ואל תפיצו"],
+ {t:"16:10",who:"רועי",fwd:true,voice:"daphne",dur:38,q:"אני לא יכולה כבר, רועי, לעשות כזאת כמות של תורניות בור בחודש, אוקיי? אני פיזית לא יכולה כבר, אוקיי?"},
+ ["16:10","בן","נו"],["16:10","תומר","אמאלה"],
+ {t:"17:33",who:"רועי",imgs:["d1","d2","d3","d4"],alt:"השיחה של רועי ודפנה על תורנות הבור, 17:18–17:30",cap:"תגידו אני מסביר משהו לא ברור? שהיא צריכה לחזור על אותם דברים כל כך הרבה פעמים"},
+ ["17:34","רועי","כאילו לא ברור לה שאני לא אומר אמן על כל דבר שרוצים"],
+ ["21:55","רועי","זה מה שאני אומר אחי כאילו אין לי בעיה להחליף"],["21:55","רועי","יש לי בעיה להתחייב"],
+ ["22:00","רועי","זה כמו לצאת עם מישהי לדייט ראשון"],["22:00","רועי","אתה לא מחויב לה אם אתה מוצא נכס יותר שווה להשקעה"],
+ ["~","28.3.2024","פרק ב׳: הבעיטה"],
+ ["?","בבוקר בן לבד במעבדה עם דפנה. לפי רועי: היא נכנסה מתוסכלת מהתורנות, באה לזרוק את המקבוק שלו, התחרטה, ובעטה בקיר. אחר כך ניקתה את האבק מהנעל וניסתה להסתיר את החור. כמובן שראו."],
+ ["","רועי","תומר"],["","רועי","שעת סיפור"],["","רועי","ודפנה נכנסה והייתה עצבנית"],
+ ["","רועי","ואז היא החליטה על הצעד המבריק הבא"],["","רועי","שיפתור את כל הבעיות שלה בחיים"],["","רועי","לבעוט בקיר"],
+ {t:"11:32",who:"רועי",img:"hole",cap:"זאת התוצאה"},
+ ["","תומר","לאטאאאא"],["","תומר","לאאאאא"],["","תומר","מה קרה אחרי הקיר?"],
+ ["","רועי","אסתר אמרה שהיא לא יכולה שהיא תהיה ביחידה"],
+ ["","תומר","שמע נראלי היא תקבל פטור תורניות עכשיו"],
+ ["","רועי","ואדלר אמר שעם כוח כזה היו צריכים לקבל אותה לגולני"],
+ ["","תומר","תתקן זריז עם בן"],["","תומר","תדפיסו דף לבן"],["","תומר","ותדביקו"],["","תומר","לא ישימו לב להבדל"],
+ ["","רועי","אני ובן מנסים להירגע מרוב צחוק"],
+ ["?","הסוף, לפי רועי: דפנה ניסתה להאשים אותו, אבל הוא היה בחדר אחר עם עמית ונועה. בן העיד. אדלר נתן לה עשרה ימי ריתוק וקיזז שליש משכורת."],
+ ["~","30.3.2024","פרק ג׳: בוקר חור"],
+ {t:"",who:"רועי",poll:{q:"לפנות אליה בבוקר אור או בוקר חור",opts:[["בוקר אור",0],["בוקר חור",1]],note:"בן כבר הצביע: \"חור💀\""}},
+ ["","תומר","רועי היא תדפוק לך מכות"],["","תומר","רועי תהיה חזק"],
+ ["","רועי","אולי נגיד לה מה קרה דפנה שמעתי יש לך חור במשכורת"],
+ ["~","31.3.2024"],
+ ["","רועי","ברור שאני אראה את דפנה ברגע שאני נכנס למעלית איזה מנחוס אני"],
+ ["","בן","אחי תבדוק שאין חור במעלית"],
+ {t:"09:03",who:"רועי",img:"patch",cap:"החור נאטם אך השאיר תזכורת"},
+ ["","בן","לחורר את הקיר שיהיה כמו בעריכה"],
+ ["","תומר","כולה עשתה חור בקיר"],
+ ["","רועי","מזל שיש לי אוזניות עם סינון רעשים"],
+ ["~","28.11.2024"],
+ ["!","נפתחה קבוצה חדשה: מעבדה😎 · רועי, תומר, בן, רון וליאל"],
+ ["~","15.12.2024","שיחת הגישור · מעבדה😎"],
+ ["?","בדרך חזרה מהכנרית שאלו את רועי אם הוא לא אוהב אנשים ביחידה. הוא ענה שהוא שונא רק שלושה. אחת מהשלושה שמעה, ואסתר, מפקדת היחידה, כינסה את כל הגף לשיחת גישור. רועי הקליט: 20 דקות ו־42 שניות, הקולית הכי ארוכה בשתי הקבוצות."],
+ {t:"13:14",who:"רועי",fwd:true,voice:"gishur1",dur:50,q:"עד שסוף סוף עברתם להיות גף תקשוב, גף רציני ומקצועי, מה קרה? יותר מדי קפה?"},
+ {t:"13:14",who:"רועי",fwd:true,voice:"gishur2",dur:19,q:"אתם הולכים לאכול ביחד… ומחר אתה יכול? / אני לא יכול להתחייב על דברים."},
+ ["?","תשעה חודשים קודם, לדפנה: ״יש לי בעיה להתחייב״. העקביות לא נשברה."],
+ ["~","29.1.2025","בן והפקודה"],
+ ["?","בן יצא עם סוניה, חיילת תחת הפיקוד שלו, והסתיר את זה. הם נפרדו בדיוק כשהיא סיימה להיות הפקודה שלו."],
+ ["23:03","רועי","בשביל מה צריך בנות"],["23:03","רועי","כשיש חברים"],["23:03","רועי","חבר לא יבגוד בך"],["23:04","רועי","אלה אם כן הוא מתחיל לצאת עם הפקודה שלו ואז שואל אותך אם אתה אויב או חבר"],
+ ["23:04","בן","תמותו"],["23:05","רועי","אתה משלם עליה בארוחות צהריים שלכם"],["23:05","בן","כן"],["23:06","רועי","מיליארדר"],
+ ["~","17.3.2025","מעבדה😎"],
+ ["23:04","רועי","מחר אתה מחלץ את הסרטון"],["23:04","רועי","זו הייתה חליקה מפוארת"],["23:05","בן","אני חייב לראות את זה"],["23:05","רועי","שמע החליקה הכי מצחיקה בהיסטוריה"],
+ ["23:10","ליאל","של מי"],["23:10","רועי","שלי"],["23:10","ליאל","אני מחכה למחר"],
+ ["~","20.3.2025","מעבדה😎"],
+ {t:"10:06",who:"רון",vid:"slide",cap:"😂  ·  מצלמת האבטחה, 17.3.2025 10:57"},
+ ["~","17.6.2025","מעבדה😎"],
+ ["00:39","בן","מעניין מה שאתם אומרים"],["00:39","רון","מעניין: אני בא / או מעניין: עזבו אותי אתם לא סוניה"],["00:40","תומר","1-0 לרון"],
+ ["~","25.9.2025","מעבדה😎"],
+ ["13:53","רועי","חיילת חדשה עוד לא הספיקה לנשום ובן כבר שולח לב אל תוך חלום / בן לא מפספס כמו בשעון רק מזהה חיילת ופותח חזון"],
+ ["13:54","רועי","בן הבוס של הפלוגה כולן כבר יודעות אם את פקודה תיכיני לב תתחילי לבהות"],
+ ["13:55","רועי","כל שיחה איתו זה שבת שלום ואז כל רגע איתו זה מסע חלום"],
+ ["~","12.10.2025","מעבדה😎"],
+ ["12:12","בן","לא עמדתי להתחיל איתה"],["12:12","רון","זה בסדר"],["12:12","רון","היא תתחיל איתך"],["12:12","רון","אבל עכשיו היא כבר לא פקודה"],
+ ["~","5.11.2025","מעבדה😎"],
+ {t:"14:33",who:"רועי",voice:"keys",dur:43,q:"המעבדה הזאת היא שלך, תכניס לפה את מי שאתה רוצה… רק בבקשה אחת יש לי, תכבד את הספה הזאתי פה, בסדר?"},
+ ["15:51","בן","אתם לא נורמלים"],["15:51","רון","בן."],["15:51","רון","אם היא לא פקודה…"],["15:51","בן","עכשיו אני יוצא"],
+ ["~","18.11.2025"],
+ ["!","רון הצטרף לקבוצה"],
+ ["!","שם הקבוצה: ארבעת האוטיסטים"],
+ ["~","24.11.2025"],
+ ["17:59","תומר","בן מה עוללת לה בן?"],["17:59","בן","מה אני קשור"],["18:00","רועי","זה מה שקורה אחרי שאת פקודה של בן"],["18:02","תומר","היא מנסה להשיג אותך"],
+ ["18:11","רון","בן."],["18:11","רון","די לחיות באשליות."],["18:11","רון","זה סופי."],["18:11","רון","היא חושקת בך."],
+ ["~","25.1.2026"],
+ ["12:24","רון","אולי חוץ מזו שהוא מחליק במזדרון"],
+ ["~","9.7.2026","מעבדה😎 · ההודעה האחרונה"],
+ ["18:35","ליאל","תגידו רגע / זוכרים איך קוראים למפקד בגף מעבדה לפני שהגעתי"],
+ ["18:35","תומר","שמע אתה טופ רנדומליים אחי"]
+];
+render($("chatbox"),CHAT);
+
+const MEDIA=[
+ ["slide","ההחלקה ממצלמות האבטחה, 17.3.2025",1],
+ ["hole","\"זאת התוצאה\" — רועי, 28.3.2024"],["patch","\"החור נאטם אך השאיר תזכורת\" — 31.3.2024"],
+ ["shake","\"רק חסר לי את רועי והמקבוק ואני בבית\" — תומר, 11.5.2024"],
+ ["wig","הפאה הסגולה. זה רועי. 26.9.2024"],
+ ["onezero","\"1-0 לתומר\" — אחרי שפספס אוטובוס, 3.6.2024"],
+ ["trash","רועי מחפש בפח את הנעליים שאיבד, 6.6.2024"],
+ ["toilet","\"שירותי גברים\". פורים, אחד האנשים שלא אהבנו. 12.3.2024"],
+ ["sleep","רועי נרדם במעבדה, בן מצלם. 9.7.2024"],
+ ["rabbi","\"רבי ניסנבאום בשיעור תורה\" — רועי. רון: \"עד כמה שידוע לי יש פער די גדול בין פיזיקה לתורה\". 14.8.2025"],
+ ["london","\"רועי אחרי שהטיול בלונדון השתבש…\" — תומר, 18.6.2025"],
+ ["sofa","הספה האדומה. רועי: בן ביים את זה. 20.5.2025"],
+ ["nir","\"נתפס לניר הצוואר הוא רואה סדרה בעמידה\" — 1.9.2025"],
+ ["ich","\"איכ\" — תומר, 26.12.2023"],
+ ["sweat","בן: \"שמע אחי הוא ההגדרה של מקלחת\". 2.9.2024"],
+ ["night","יציאה לילית, 28.3.2024. היום שבו נבעט הקיר"],
+ ["eyes","תומר, 27.5.2025. בן: \"די כבר\""],
+ ["feet","המשרד, 2.9.2024"],
+ ["laugh","תומר במעבדה, 14.3.2024"],
+ ["haifa","\"חיפה עיר האורות\" — יום הגיבוש, 23.1.2025"],
+ ["d1","השיחה עם דפנה, 1 מתוך 4"],["d2","השיחה עם דפנה, 2 מתוך 4"],["d3","השיחה עם דפנה, 3 מתוך 4"],["d4","השיחה עם דפנה, 4 מתוך 4"]
+];
+const mg=$("mgrid");
+for(const [f,c,isV] of MEDIA){const b=el("button");b.type="button";b.setAttribute("aria-label",c);
+  if(isV){const v=el("video");v.src="m/"+f+".mp4#t=3";v.muted=true;v.preload="metadata";v.style.cssText="width:100%;height:100%;object-fit:cover";b.append(v,el("span","vt","▶ 0:10"))}
+  else{const im=new Image();im.src="m/"+f+".jpg";im.alt=c;im.loading="lazy";b.append(im)}
+  b.onclick=()=>openLB(f,c,isV);mg.append(b)}
+
+const VOICES=[
+ {t:"5.7.2024, 01:32",who:"תומר",voice:"pizza",dur:46,q:"מה זה הפיצה הבולבול הזאת, אחי? מה זה להזמין מקום, אחי? מה, אני מוכה?"},
+ {t:"14.11.2024",who:"רועי",fwd:true,voice:"protein",dur:56,q:"ניסיתי להתקשר אליך כדי להגיד לך בטלפון, אבל וואלה, טעמתי עכשיו את האבקת חלבון"},
+ ["16:26","בן","למה אתה כזה דרמטי בהתחלה של ההודעה"],
+ {t:"9.10.2024",who:"תומר",voice:"kochaviot",dur:16,q:"וואו, אתה טוב בהכול, והיא משחררת אותך."},
+ {t:"1.10.2024",who:"תומר",voice:"winter",dur:11,q:"אתה נראה כאילו היית מדיכאון ואמרת יאללה פאק איט ווינטר איזט קאמינג ועשית איזה טרנספורמיישן"},
+ {t:"3.6.2024",who:"תומר",voice:"shomer",dur:16,q:"אני בא, מסובב את התיק, כאילו אני בא להעביר אותו שומר סף"},
+ {t:"19.9.2024, 08:44",who:"בן",voice:"gym",dur:10,q:"בחיים לא היה לי יום שמח כזה."},
+ {t:"31.7.2024",who:"רועי",voice:"mom",dur:50,q:"אה, מה זה, הגעת עם אמא שלך?"},
+ {t:"10.12.2023",who:"תומר",voice:"smelly",dur:16,q:"הסרטון המסריח הזה"},
+ {t:"27.3.2024",who:"רועי",fwd:true,voice:"daphne",dur:38,q:"אני פיזית לא יכולה כבר, אוקיי?"},
+ {t:"15.12.2024",who:"רועי",fwd:true,voice:"gishur1",dur:50,q:"מה קרה? יותר מדי קפה?"},
+ {t:"15.12.2024",who:"רועי",fwd:true,voice:"gishur2",dur:19,q:"אני לא יכול להתחייב על דברים."},
+ {t:"5.11.2025",who:"רועי",voice:"keys",dur:43,q:"תכבד את הספה הזאתי פה, בסדר?"}
+];
+render($("vlist"),VOICES);
+
+const PEOPLE=["רועי","תומר","בן","רון","ליאל"];
+const MOMENTS=[
+ {t:"מפוחית, חצוצרה וכפר סבא",d:"6.7.2024",p:["רועי","תומר"],r:[["01:46","תומר","כמה זה קשה ללמוד מפוחית"],["01:46","רועי","קליל"],["01:46","רועי","אבל למה שתעשה את זה"],["01:46","תומר","אני רוצה להיות קארבוי"],["01:47","תומר","זה היעוד שלי"],["01:47","תומר","אני קונה מפוחית"],["01:48","רועי","מה שתהיה זה פאקבוי"],["01:48","תומר","איזה פאקבוי מנגן על מפוחית"],["01:49","רועי","אתה אשכנזי פחד"],["01:49","רועי","רק מגדיל את זה"],["01:49","תומר","אתה מנגן"],["01:49","תומר","על פאקינג"],["01:49","תומר","חצוצרה"],["01:49","תומר","והיית בתזמורת"],["01:49","תומר","ואתה גר בכפר סבא"],["01:49","תומר","עוד טיעונים?"],["01:50","תומר","תודה רבה"],["01:51","רועי","חחחחחחחח"],["01:51","רועי","בסדר"],["01:51","רועי","רק אמרתי"],["02:15","תומר","הייטר"]]},
+ {t:"האם רועי דמות?",d:"13.8.2024",p:["רועי","תומר","בן"],r:[["23:40","רועי","ועלתה השאלה האם רועי דמות"],["23:40","רועי","מה אתם אומרים"],["23:40","תומר","חד"],["23:40","תומר","משמעית"],["23:40","רועי","תודה🙏"],["23:41","בן","זה באמת שאלה?"],["23:41","בן","אומיגד"],["23:41","רועי","כן רציני"],["23:41","תומר","אחיייייייי"],["23:41","תומר","אני לא מאמין"],["23:41","תומר","שלא יכולתנו לצלם את זה"],["23:41","תומר","הוא כזה רמוס!!!!"]]},
+ {t:"חבורת הזבל",d:"11.8.2024",p:["רועי","בן"],r:[["12:45","בן","חבורת הזבל אצלי בגף ואתם לא תאמינו איך הם קוראים לחבורה שלנו"],["12:45","בן","זרקו ניחוש"],["12:48","רועי","חבורת חלבון"],["12:49","בן","לא"],["12:49","רועי","לנו הם קוראים חבורת הזבל?"],["12:49","בן","כן"],["12:49","רועי","וואלה זה משמח אותי"],["12:49","בן","שמע זה קורע"],["12:49","רועי","שהם לא אוהבים אותי"],["12:51","בן","האמת שגם אותי"]]},
+ {t:"אפצ׳י אחד, תספורת אחת",d:"1.10.2024",p:["בן","תומר","רועי"],r:[["16:33","בן","מלעשות על הכי גבוהה הגעתי להכי נמוך עקב אפצי שהיה לי"],["16:34","תומר","אני בהלם"],["16:34","תומר","זה הדבר הכי מצחיק שראיתי"],["16:34","רועי","זה מזעזע"],["16:34","בן","אני אגיד לך משהו יותר נורא שאני די אוהב את זה"],["16:35","תומר","בן שברת אותי"],["16:35","בן","אמר המקריח"],["16:35","תומר","חחחחחחחחחחחחח"],["16:39","בן","אתה לא מבין כמה קרוב הייתי ללהוריד את הגבה"]]},
+ {t:"הזיין של החבורה",d:"9.10.2024",p:["תומר","רועי","בן"],r:[["22:49","תומר","ואני מושך גברים"],["22:49","תומר","אז מישהו צריך לקחת אחריות"],["22:49","תומר","נהיית הזיין של החבורה"],["22:49","רועי","תמיד הייתי"],["22:49","תומר","אחי דיברתי על בן"],["22:49","תומר","אני מת"],["22:49","רועי","אה"],["22:49","רועי","אופס"],["22:50","בן","רגע"],["22:50","בן","איך אני הזיין"]]},
+ {t:"רועי עילם בטעות",d:"4.3.2025",p:["רועי","תומר","בן"],r:[["08:21","רועי","אגב אני מאחר עשיתי בטעות רועי עילם"],["08:21","תומר","אחי רועי עילם זה במכוון"],["08:21","בן","אחי איך רועי עילם עושה בטעות רועי עילם"],["08:21","בן","משהו פה לא מסתדר לי"],["08:21","רועי","נשבע שזה היה בטעות"],["08:22","בן","אתה בסדר?"],["08:27","רועי","חחחחחחח אני מדהים זה אומר שישנתי 8 שעוצ"]]},
+ {t:"רון מקדים. או שלא",d:"26.5.2026",p:["רון","בן"],r:[["21:03","רון","עושה רושם שאני מקדים"],["21:05","רון","כנראה קצת מקדים"],["21:05","רון","לא בהרבה"],["21:05","רון","אני חושב"],["21:05","בן","כמה קצת"],["21:05","רון","קשה לדעת"],["21:05","רון","כנראה 10-15 דק"],["21:06","רון","אלא אם יהיה עיכוב לא צפוי"],["21:15","רון","בעצם אני חושב שאני אגיע בעשר"],["21:16","רון","לא תזמנתי את ההליכה"],["21:35","רון","יאפ קצת מתעכב כנראה"],["21:39","רועי","ידידי רב הקומה"],["21:42","רון","או שאני לא מתעכב בעצם"],["21:42","רון","נראלי"]]},
+ {t:"השער",d:"14.7.2026",p:["בן","תומר"],r:[["10:41","בן","אני ב13 הולך לסדר קצת את השער אז אני בדרך אביא"],["10:48","תומר","[תמונה של שער]"],["10:48","תומר","השער כמובן"],["10:48","תומר","הוא התכוון שער של הבית אה"],["10:48","תומר","חשבתי בן האריך שיער שוב"],["10:48","רועי","אני מת"],["10:49","בן","מאריך אבל אני בונה לו צורה"],["11:34","בן","לראש שלי"],["11:36","רועי","אההה"],["11:36","רועי","שיער"],["11:36","בן","כן בטעות מחקתי את ה י"]]},
+ {t:"החשבון במסעדה",d:"29.11.2024 · מעבדה😎",p:["תומר","רון","בן"],r:[["00:01","תומר","[סרטון] נוסע הביתה בידיעה שזייינתי את רועי עילם בחשבון"],["00:01","תומר","מת"],["00:02","רועי","יצא לי הגיוני"],["00:03","רועי","75 פרגיות 29 לבירה ועוד החצי ציפס זה נראלי 18"],["00:03","רון","אני שמתי 115"],["00:05","בן","אני שמתי 80"],["00:05","תומר","חחחחחחח די דיי"],["00:07","רון","אני שמתי 15%"]]},
+ {t:"שיגעון",d:"22.12.2024 · מעבדה😎",p:["רון","ליאל"],r:[["10:03","רועי","התקשרו עכשיו מאופק לרון לעזור לו עם המשתמש והמוקדן היה נחמד כזה שאל אותו מה איתך ורון עונה לו ״שיגעון״"],["10:03","בן","מתתתתתת"],["10:04","ליאל","חחחחח"],["10:04","ליאל","קלאסי רון"]]},
+ {t:"הכדורים שנראים כמו נר",d:"23.5.2025 · מעבדה😎",p:["תומר","רון","ליאל"],r:[["13:11","תומר","חברים יקרים"],["13:11","תומר","אתם לא תאמינו"],["13:11","תומר","זוכרים את הכדורים שלקחתי?"],["13:12","תומר","הכדורים שנראים כמו נר!"],["13:13","רון","זה נר?"],["13:14","רון","תתבע את צהל"],["13:14","תומר","פאקינג בלעתי כדורים שנועדו לתחת!😂"],["13:14","רועי","חחחחחחחחחח הגיע הזמן לתקן העוולה"],["13:28","ליאל","💀💀"]]},
+ {t:"ככה בן.",d:"16.6.2025, 04:31 · מעבדה😎",p:["רון","בן"],r:[["04:31","בן","תודה"],["04:31","רון","בבקשה בן"],["04:32","בן","למה צריך את הבן בסוף"],["04:32","רון","ככה בן."],["04:32","רון","עכשיו גם עם נקודה."]]},
+ {t:"אנחנו תורנות",d:"28.6.2025 · מעבדה😎",p:["רון","רועי","תומר"],r:[["10:28","תומר","כולם מפקירים אותנו"],["10:29","תומר","כשאני מפקיר זה עם סיבה"],["10:29","תומר","אני משרת את המדינה"],["10:29","רון","יום הולדת של משפחה זו לא סיבה???"],["10:29","רועי","אנחנו לא משפחה?"],["10:29","רון","אתם לא יום הולדת"],["10:30","תומר","אנחנו יותר מזה!"],["10:30","רועי","אנחנו תורנות"]]},
+ {t:"לא אושר. הוא יאשר.",d:"12.8.2025 · מעבדה😎",p:["רון","רועי"],r:[["19:40","רון","לא אושר"],["19:42","רון","הוא יאשר."],["19:44","רועי","אני מנסה להבין רון איך אתה אומר את זה"],["19:45","רון","לא סותר"],["19:46","רועי","זה מה שנקרא סתירה לוגית"],["19:46","רון","מה לך וללוגיקה?"],["19:46","רון","אין כאן סתירה."],["19:47","רועי","טוב הדיון הסתיים אין לי כוח לזה"]]},
+ {t:"המפתח שלי בתיק",d:"4.9.2025 · מעבדה😎",p:["תומר","רועי"],r:[["18:19","רועי","תנעל זה אומר תסתובב עם מפתחות עלייך"],["18:19","רועי","איך תכננת לנעול?"],["18:19","רועי","אם אין עלייך מפתח"],["18:19","תומר","המפתח שלי בתיק."],["18:19","תומר","רועי."],["18:19","רועי","אוקיי"],["18:20","רועי","טיעון טוב"],["18:20","רועי","ניצחת"]]},
+ {t:"זה לא משולש",d:"9.9.2025 · מעבדה😎",p:["רון","בן"],r:[["10:33","בן","הם שניהם הולכים איתה לחדר כושר כדי להרשים אותה"],["10:33","רון","מתי זה אי פעם קרה או יקרה"],["10:34","בן","היום"],["10:34","רון","שקר וכזב"],["13:40","רון","זה לא משולש"],["13:40","רון","זה רק רועי"],["13:40","רון","והצלע השנייה"]]}
+];
+const sl=$("slist"),ch=$("chips");
+function renderStars(who){sl.replaceChildren();for(const m of MOMENTS){if(who&&!m.p.includes(who))continue;const s=el("article","star");const h=el("div","sh");h.append(el("b",null,m.t),el("span",null,m.d));const c=el("div","chat");render(c,m.r);s.append(h,c);sl.append(s)}}
+for(const p of ["כולם",...PEOPLE]){const b=el("button",null,p);b.type="button";b.setAttribute("aria-pressed",p==="כולם");b.onclick=()=>{[...ch.children].forEach(x=>x.setAttribute("aria-pressed",x===b));renderStars(p==="כולם"?null:p)};ch.append(b)}
+renderStars(null);
+
+const STATS=[["52,894","הודעות"],["894","קוליות של תומר"],["0","קוליות של רון"],["501","סטיקרים של בן"],["1,186","פעמים \"אחי\" (רון: 1)"],["80","ימי השתיקה הכי ארוכה. נשברה ב\"תומרררר\""],["520","הודעות ב־18.8.2024, היום הכי עמוס"],["04:53","ההודעה הכי מאוחרת, רועי: \"לא חסכתי פה בקניות\""]];
+for(const [a,b] of STATS){const d=el("div");d.append(el("b","num",a),el("span",null,b));$("stats").append(d)}
+
+const CARDS=[
+ {n:"רועי",full:"רועי עילם",ab:"\"אני גורילה שמנה\"",tag:"הפועל",stats:[["הודעות","20,138"],["\"חחח\"","1,414"],["מונולוג הכי ארוך","34 הודעות ברצף"],["המילה שלו","שמע"],["אימוג׳י","💀"]],q:"אני גורילה שמנה\nהשרירים קיימים מתחת למעטפת השומן",qs:"7.12.2024, 00:22",img:"wig",imgc:"הפאה הסגולה, 26.9.2024",voice:"keys",dur:43,vq:"תכבד את הספה הזאתי פה, בסדר?"},
+ {n:"תומר",full:"תומר לנדסמן",ab:"🎙 הקלטה קולית",tag:"תחנת הרדיו",stats:[["קוליות","894"],["\"אחי\"","678"],["פותח את היום","252 בקרים"],["הודעות בין 00:00 ל־05:00","834"],["אימוג׳י","💀"]],q:"אתה מנגן\nעל פאקינג\nחצוצרה\nוהיית בתזמורת\nואתה גר בכפר סבא\nעוד טיעונים?",qs:"6.7.2024, 01:49",img:"laugh",imgc:"תומר במעבדה, 14.3.2024",voice:"pizza",dur:46,vq:"מה זה הפיצה הבולבול הזאת, אחי?"},
+ {n:"בן",full:"בן זאנטקרן",ab:"[סטיקר]",tag:"מלך הסטיקרים",stats:[["סטיקרים","501"],["הודעות שגררו צחוק","19.8%, הכי גבוה"],["המילה שלו","אומיגד"],["הקולית הכי ארוכה","133 שניות"],["אימוג׳י","🎉"]],q:"אחי איך רועי עילם עושה בטעות רועי עילם",qs:"4.3.2025, 08:21",voice:"gym",dur:10,vq:"בחיים לא היה לי יום שמח כזה."},
+ {n:"רון",full:"רון ניסנבאום",ab:"אכן.",tag:"השופט",stats:[["קוליות","0"],["\"אחי\"","1"],["אימוג׳י","אף לא אחד"],["\"אכן\" במעבדה","49"],["\"חחח\" בקבוצה","7"]],q:"מה לך וללוגיקה?\nאין כאן סתירה.",qs:"12.8.2025, 19:46",img:"rabbi",imgc:"״רבי ניסנבאום בשיעור תורה״, 14.8.2025",novoice:"אין. 0 קוליות. רון כותב."}
+];
+const LIEL={n:"ליאל",full:"ליאל רביבו",ab:"כע",tag:"טופ רנדומליים",stats:[["הודעות במעבדה","710"],["קוליות","22"],["המילה שלו","כע"],["שבר שתיקה","26 פעמים"],["אימוג׳י","💀"]],q:"חחחחח\nקלאסי רון",qs:"22.12.2024, על \"שיגעון\"",novoice:"22 קוליות במעבדה. אף אחת לא נכנסה לכאן."};
+function member(c,box){
+  const w=el("div","mem");w.style.setProperty("--c",COL[c.n]);
+  const b=el("button");b.type="button";b.setAttribute("aria-expanded","false");
+  const av=el("div","ava",c.n[0]);av.style.background=COL[c.n];
+  const tx=el("div");const nm=el("div","nm");nm.append(el("span",null,c.full),el("small",null,c.tag));tx.append(nm,el("div","ab",c.ab));
+  b.append(av,tx);
+  const more=el("div","more");more.hidden=true;const dl=el("dl");for(const [k,v] of c.stats){dl.append(el("dt",null,k),el("dd","num",v))}
+  const bq=el("blockquote",null,c.q);bq.append(el("small",null,c.qs));more.append(dl,bq);
+  b.onclick=()=>{more.hidden=!more.hidden;b.setAttribute("aria-expanded",!more.hidden)};
+  w.append(b,more);box.append(w);
+}
+CARDS.forEach(c=>member(c,$("members")));member(LIEL,$("members2"));
+function pcard(c){
+  const w=el("article","pc");w.style.setProperty("--c",COL[c.n]);
+  const ph=el("div","ph");
+  if(c.img){const im=new Image();im.src="m/"+c.img+".jpg";im.alt=c.imgc;im.onclick=e=>{e.stopPropagation();openLB(c.img,c.imgc,false)};ph.append(im)}
+  else ph.append(el("div","ava",c.n[0]));
+  const t=el("div");t.append(el("h3",null,c.full),el("span","tg",c.tag),el("div","ab2",c.ab));ph.append(t);w.append(ph);
+  const s1=el("div","sec");s1.append(el("h4",null,"במספרים"));const dl=el("dl");for(const [k,v] of c.stats)dl.append(el("dt",null,k),el("dd","num",v));s1.append(dl);w.append(s1);
+  const s2=el("div","sec");s2.append(el("h4",null,"הציטוט"));const bq=el("blockquote",null,c.q);bq.append(el("small",null,c.qs));s2.append(bq);w.append(s2);
+  const s3=el("div","sec");s3.append(el("h4",null,"קולית"));
+  if(c.voice){s3.append(voice(c.voice,c.dur));s3.append(el("div","vq",c.vq))}else s3.append(el("div","none",c.novoice));
+  w.append(s3);return w;
+}
+[...CARDS,LIEL].forEach(c=>$("cards").append(pcard(c)));
+
+const DICT=[
+ ["לעשות רועי עילם","להישאר לישון ולאחר. במכוון.","\"אחי רועי עילם זה במכוון\" — תומר"],
+ ["שחור","המילה לכל דבר רע. רועי שכח אוזניות, ותוך שבע דקות שלושתם כתבו \"שחור\".","19.5.2024"],
+ ["בוקר חור","בוקר טוב, בגרסה של דפנה.","רועי, 30.3.2024"],
+ ["חבורת הזבל","השם שהגף של בן נתן לחבורה. רועי שמח.","11.8.2024"],
+ ["פקודה","ראו: בן.","2024–2025"],
+ ["אכן","תשובה מלאה, לפי רון.","49 פעמים במעבדה"],
+ ["נודר","ההודעה השנייה במעבדה, של בן: \"נודררררר\". אחר כך זה של תומר.","47 פעמים, תומר"],
+ ["אומיגד","תגובה של בן לכל דבר שרועי עושה.","בן"],
+ ["כע","מה שליאל כותב.","ליאל"],
+ ["אין מנוס","גזר דין.","תומר"],
+ ["1-0 לצה״ל","לוח התוצאות של תומר מול הצבא. לפעמים 1-0 לתומר, ולפעמים 1-0 לרון.","תומר"],
+ ["חבר או אויב","מי שמאכזב עובר לאויב.","החבורה"],
+ ["קאדר","כל משימה שרחל מטילה, בעיקר על מי שלא מתווכח.","רועי"],
+ ["תרחיש העזר","אף אחד לא יודע מה זה. גם לא רועי. זאת הבדיחה.","30.6.2025"]
+];
+for(const [a,b,c] of DICT){const d=el("div","term");d.append(el("b",null,a+" · "),el("span",null,b),el("small",null,c));$("dict").append(d)}
+
+const QUIZ=[
+ ["אמר המקריח","בן","בן, 1.10.2024, לרועי, אחרי שהתעטש באמצע תספורת"],
+ ["השרירים קיימים מתחת למעטפת השומן","רועי","רועי, 7.12.2024"],
+ ["בן.\nדי לחיות באשליות.\nזה סופי.","רון","רון, 24.11.2025, שבוע אחרי שהצטרף"],
+ ["כן בטעות מחקתי את ה י","בן","בן, 14.7.2026. השער היה שיער"],
+ ["לא תזמנתי את ההליכה","רון","רון, 26.5.2026, בדרך לפגישה"],
+ ["וואלה זה משמח אותי\nשהם לא אוהבים אותי","רועי","רועי, 11.8.2024, על \"חבורת הזבל\""],
+ ["המפתח שלי בתיק.\nרועי.","תומר","תומר, 4.9.2025. רועי: \"טיעון טוב / ניצחת\""],
+ ["שמע אתה טופ רנדומליים אחי","תומר","תומר לליאל, 9.7.2026, ההודעה האחרונה במעבדה"],
+ ["אתם לא יום הולדת","רון","רון, 28.6.2025, למה הוא מבריז מתורנות שבת"],
+ ["למה אתה כזה דרמטי בהתחלה של ההודעה","בן","בן, 14.11.2024, על הקולית של רועי על אבקת החלבון"],
+ ["ככה בן.\nעכשיו גם עם נקודה.","רון","רון, 16.6.2025, 04:32"],
+ ["זה הדבר הכי מצחיק שראיתי","תומר","תומר, 1.10.2024, על הקרחת של בן"],
+ ["חחחחח\nקלאסי רון","ליאל","ליאל, 22.12.2024"],
+ ["אנחנו תורנות","רועי","רועי, 28.6.2025, לרון"],
+ ["מיליארדר","רועי","רועי, 29.1.2025, על בן שמשלם על הארוחות של הפקודה"]
+];
+let qi=0,qok=0;const order=QUIZ.map((_,i)=>i);
+for(let i=order.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]]}
+function showQ(){
+  const [q,a,src]=QUIZ[order[qi]];
+  $("qscore").textContent=`שאלה ${qi+1} מתוך ${QUIZ.length} · צדקת ב־${qok}`;
+  $("qq").textContent="«"+q+"»";$("qfb").textContent="";$("qnext").hidden=true;
+  const o=$("qopts");o.replaceChildren();let done=false;
+  for(const p of PEOPLE){const b=el("button");b.type="button";const av=el("span","ava",p[0]);av.style.background=COL[p];b.append(av,el("span",null,p));
+    b.onclick=()=>{if(done)return;done=true;
+      if(p===a){b.classList.add("ok");qok++}else{b.classList.add("no");[...o.children].find(x=>x.textContent.endsWith(a)).classList.add("ok")}
+      $("qfb").textContent=src;$("qnext").hidden=false;$("qscore").textContent=`שאלה ${qi+1} מתוך ${QUIZ.length} · צדקת ב־${qok}`};
+    o.append(b)}
+}
+$("qnext").onclick=()=>{qi++;if(qi<QUIZ.length){showQ();return}
+  $("qq").textContent=qok>=12?"אכן.":qok>=8?"לא רע. רועי עילם בטעות.":"שחור.";$("qopts").replaceChildren();$("qfb").textContent=`צדקת ב־${qok} מתוך ${QUIZ.length}.`;$("qscore").textContent="סוף המבחן";
+  $("qnext").textContent="עוד פעם";$("qnext").onclick=()=>{qi=0;qok=0;$("qnext").textContent="הבא";$("qnext").onclick=arguments.callee;showQ()}};
+showQ();
+
+// tabs
+const views=["chat","film","media","voices","starred","people","quiz","info"];
+function go(v,push){if(!views.includes(v))v="chat";
+  for(const x of views)$("v-"+x).hidden=x!==v;
+  for(const b of $("tabs").children)b.setAttribute("aria-selected",b.dataset.v===v);
+  if(push)try{history.replaceState(null,"","#"+v)}catch(e){}
+  window.scrollTo(0,0)}
+for(const b of $("tabs").children)b.onclick=()=>go(b.dataset.v,true);
+document.querySelector(".pin").onclick=()=>{go("chat",true);const t=[...document.querySelectorAll("#chatbox .txt")].find(x=>x.textContent.startsWith("כל דבר שכולל"));if(t)t.scrollIntoView({block:"center"})};
+go(location.hash.slice(1)||"chat");
+
+// typing indicator in header, like the group is alive
+const typers=["תומר מקליט…","בן שולח סטיקר…","רון: אכן.","רועי מקליד…","רועי, תומר, בן, רון"];let ti=0;
+setInterval(()=>{ti=(ti+1)%typers.length;$("typing").textContent=typers[ti]},2600);
+
+// lightbox
+const lb=$("lb");
+function openLB(f,cap,isV){const old=lb.querySelector("video");if(old)old.remove();
+  if(isV){$("lbimg").hidden=true;const v=el("video");v.src="m/"+f+".mp4";v.controls=true;v.playsInline=true;v.onclick=e=>e.stopPropagation();lb.prepend(v)}
+  else{$("lbimg").hidden=false;$("lbimg").src="m/"+f+".jpg";$("lbimg").alt=cap}
+  $("lbcap").textContent=cap;lb.hidden=false}
+document.addEventListener("click",e=>{const im=e.target.closest(".msg img");if(im){openLB(im.src.split("/").pop().replace(".jpg",""),im.dataset.cap||im.alt,false)}});
+lb.onclick=()=>{const v=lb.querySelector("video");if(v)v.remove();lb.hidden=true};
+document.addEventListener("keydown",e=>{if(e.key==="Escape")lb.onclick()});
+</script>
+
+</body></html>
